@@ -1,0 +1,32 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# MacOS system files
+.DS_Store
+
+# Jupyter Notebook checkpoint files
+.ipynb_checkpoints/
+
+# Virtual envs
+env/
+venv/
+
+# Log files
+*.log
+
+# Test coverage files
+htmlcov/
+*.coverage
+
+# IDE Setting files
+.vscode/
+.idea/
+
+# Big data and models
+*.h5
+*.ckpt
+*.tflite
+
+# Keras is for the algorithm
+!*.keras
