@@ -99,8 +99,8 @@ def find_lines_intersecting_components(detected_lines, labels):
 
 if __name__ == "__main__":
     # Test için bir resim yolu belirtin
-    image_path = '/Users/alpozcan/Desktop/arrowDetection/image_without_text.jpg'
-    model_path = '/Users/alpozcan/Desktop/arrowDetection/unet_model_512.keras'
+    image_path = '/Users/alpozcan/Desktop/chemical-formula-recognition/data/image_without_text.jpg'
+    model_path = '/Users/alpozcan/Desktop/chemical-formula-recognition/unet_model_512.keras'
 
     # Arrow head detection
     binary_mask = detect_arrow_heads(image_path, model_path)
