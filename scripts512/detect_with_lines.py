@@ -3,31 +3,29 @@ import cv2
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
-
 # GPU bellek büyümesini etkinleştir
-gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-    try:
-        for gpu in gpus:
-            tf.config.experimental.set_memory_growth(gpu, True)
-        print("Enabled GPU memory growth.")
-    except RuntimeError as e:
-        print(f"Error enabling GPU memory growth: {e}")
+
 
 
 def detect_arrow_heads(image_path, model_path):
-    model = tf.keras.models.load_model(model_path)
+    try:
+        model = load_model(model_path)
+        print("Model successfully loaded.")
+    except Exception as e:
+        print(f"Error loading model: {e}")
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
-    print("Image loaded successfully. Resizing...")
+    model.summary()
+    print("Image loaded successfully. Resizing...") 
     image_resized = cv2.resize(image, (512, 512))
     print("Image resized successfully!")
     image_array = np.expand_dims(image_resized, axis=[0, -1]) / 255.0
 
     # Prediction
     try:
-        prediction = model.predict(image_array)[0, :, :, 0]
-        print("Prediction completed successfully!")
+        prediction = model.predict(image_array)
+        print("Prediction shape:", prediction.shape)
+        prediction = prediction[0, :, :, 0]
     except Exception as e:
         print(f"Error during prediction: {e}")
     prediction_resized = cv2.resize(prediction, (image.shape[1], image.shape[0]))
