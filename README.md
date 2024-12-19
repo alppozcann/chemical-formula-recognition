@@ -2,7 +2,7 @@
 
 This repository aims to develop a system for detecting and analyzing chemical formulas from images. The project uses deep learning and computer vision techniques to identify and extract chemical structures and related information from scientific diagrams or schematics.
 
-	Note: The project is still under development, and the codebase may be incomplete or subject to significant changes.
+	> **Note:** This project is under active development, and features may change frequently.
 
 ## Overview
 
@@ -32,4 +32,37 @@ This repository aims to develop a system for detecting and analyzing chemical fo
 	4.	Calculating intersection and overlap between lines and connected components.
 	5.	Visualizing results to evaluate the system’s performance.
 
+
+## Installing the prerequisites
+	For installing the prerequisite libraries , please follow these steps:
+	1. Make sure that you have the followings installed:
+		- [Python 3.10](https://www.python.org/) or later
+		- [pip](https://pip.pypa.io/en/stable/)
+
+     	2. Create a virtual environnement (Optional)
+      		To manage dependincies, it is recommended to create a virtual environment. For creating one:
+			```bash
+			python -m venv venv
+   		To activate the virtual environment:
+     			- **On Windows:**
+				```bash
+    				venv\Scripts\activate
+     			- **On Mac/Linux:**
+				'''bash
+    				source venv/bin/activate
+	3. Install Dependencies:
+ 		Use the requirements.txt file to install all the necessary dependencies:
+   			```bash
+      			pip install -r requirements.txt
+	 		bash```
+
+
+	### 4. Verify Installation
+
+		You can verify that the installation was successful by running the following command:
+
+			```bash
+			python -m pip freeze
+
+   
 However, certain aspects such as chemical structure recognition and advanced overlap-based filtering are still under development.
