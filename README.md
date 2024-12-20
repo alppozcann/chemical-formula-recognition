@@ -64,7 +64,8 @@ For installing the prerequisite libraries , please follow these steps:
    
 	- [pip](https://pip.pypa.io/en/stable/)
 
-2. Create a virtual environnement (Optional)
+2. Create a virtual environnement (Optional):
+   
    To manage dependincies, it is recommended to create a virtual environment. For creating one:
 	```bash
 	python -m venv venv
@@ -79,12 +80,14 @@ For installing the prerequisite libraries , please follow these steps:
  	source venv/bin/activate
  	```
 3. Install Dependencies:
+
    Use the requirements.txt file to install all the necessary dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Verify Installation
+4. Verify Installation:
+   
    You can verify that the installation was successful by running the following command:
 	```bash
 	python -m pip freeze
