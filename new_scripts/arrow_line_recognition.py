@@ -124,6 +124,14 @@ def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x
                         visited_lines.add(((X1, Y1), (X2, Y2)))
                         find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, X1, X2, Y1, Y2)
 
+def get_result(image, model_path):
+        binary_mask = detect_arrow_heads(image_path, model_path)
+        original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+        num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
+        detected_lines = detect_lines(original_image)
+        intersecting_lines = find_lines_intersecting_components(detected_lines, labels)
+        visualize_results(original_image, centroids, intersecting_lines) 
+
 
 if __name__ == "__main__":
     # Image path
@@ -150,8 +158,6 @@ if __name__ == "__main__":
     #eskisi
     intersecting_lines = find_lines_intersecting_components(detected_lines, labels)
     
-
-
     # Sonuçları görselleştir
     visualize_results(original_image, centroids, intersecting_lines)
     
