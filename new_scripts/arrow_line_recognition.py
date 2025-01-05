@@ -130,9 +130,9 @@ if __name__ == "__main__":
     base_path = os.getcwd()
     test_images = 'test_images'
     image_name = '1.jpg'
-    
+    model_name = 'unet_model_512.keras'
     image_path = os.path.join(base_path, test_images, image_name)
-    model_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/saved_models/unet_model_512.keras'
+    model_path = os.path.join(base_path, model_name)
 
     # Arrow head detection
     binary_mask = detect_arrow_heads(image_path, model_path)
