@@ -84,8 +84,27 @@ def visualize_results(image, centroids, intersecting_lines):
     cv2.imwrite("output_test2.jpg",output_image)
     plt.axis("off")
     plt.show()
-          
-def find_lines_intersecting_components(detected_lines, labels):
+    
+# bounding box calculation
+def get_rotated_bounding_box(x1, y1, x2, y2, threshold=20):
+    # Çizgiyi bir nokta listesine dönüştür
+    points = np.array([[x1, y1], [x2, y2]], dtype=np.float32)
+
+    # Minimum alanlı dikdörtgeni (rotated bounding box) al
+    rect = cv2.minAreaRect(points)
+
+    # Dikdörtgenin boyutlarını genişlet (threshold kadar esneklik ekle)
+    center, (width, height), angle = rect
+    rect = (center, (width + threshold, height + threshold), angle)
+
+    # Dikdörtgenin köşelerini al
+    box = cv2.boxPoints(rect)
+    box = np.int0(box)  # Köşe noktalarını tamsayıya dönüştür
+
+    return box, rect
+
+
+def find_lines_intersecting_components(detected_lines, labels, threshold=10):
     intersecting_lines = []
     visited_lines = set()
     # İlk centroid arka plan olduğundan, onu atlıyoruz
@@ -94,10 +113,10 @@ def find_lines_intersecting_components(detected_lines, labels):
          # Centroid'in x ve y koordinatları
         for (x1, y1), (x2, y2) in detected_lines:
             # Çizgi için bounding box hesapla
-            x_min = min(x1, x2) - 10
-            x_max = max(x1, x2) + 10
-            y_min = min(y1, y2) - 10
-            y_max = max(y1, y2) + 10
+            x_min = min(x1, x2) - threshold
+            x_max = max(x1, x2) + threshold
+            y_min = min(y1, y2) - threshold
+            y_max = max(y1, y2) + threshold
             
             # Eğer centroid bounding box içinde ise
             if x_min <= cx <= x_max and y_min <= cy <= y_max:
@@ -107,6 +126,7 @@ def find_lines_intersecting_components(detected_lines, labels):
                 break  # Her centroid için yalnızca bir çizgiyi ekle
     return intersecting_lines
 
+'''
 def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2, threshold = 5):
     
     # Çizginin bounding box'ını hesapla
@@ -123,6 +143,23 @@ def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x
                         intersecting_lines.append(((X1, Y1), (X2, Y2)))
                         visited_lines.add(((X1, Y1), (X2, Y2)))
                         find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, X1, X2, Y1, Y2)
+
+'''
+
+def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2, threshold=15):
+    # Çizginin bounding box'ını döndür
+    box, rect = get_rotated_bounding_box(x1, y1, x2, y2, threshold=threshold)
+
+    for (X1, Y1), (X2, Y2) in detected_lines:
+        if ((X1, Y1), (X2, Y2)) not in visited_lines:
+            # Yeni çizginin bounding box'unu döndür
+            new_box, new_rect = get_rotated_bounding_box(X1, Y1, X2, Y2, threshold=threshold)
+
+            # İki bounding box'un kesişip kesişmediğini kontrol et
+            if cv2.rotatedRectangleIntersection(rect, new_rect)[0] != cv2.INTERSECT_NONE:
+                intersecting_lines.append(((X1, Y1), (X2, Y2)))
+                visited_lines.add(((X1, Y1), (X2, Y2)))
+                find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, X1, X2, Y1, Y2, threshold)
 
 def get_result(image, model_path):
         binary_mask = detect_arrow_heads(image_path, model_path)
