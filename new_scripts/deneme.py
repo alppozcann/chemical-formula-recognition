@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import tensorflow as tf
-
+import os
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 
@@ -126,13 +126,12 @@ def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x
 
 
 if __name__ == "__main__":
-    # Test için bir resim yolu belirtin
-    #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/image.jpg'
-    #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/data/images/3.jpg'
-    #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/data/test_images/kimya2_notext.jpeg'
-    image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/fichiers_sources/dossiers_de_test/test2/images/selected/image_0_8_2.jpeg'
-    #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/fichiers_sources/dossiers_de_test/test3/images/selected/image_0_7_2.jpeg'
-
+    # Image path
+    base_path = os.getcwd()
+    test_images = 'test_images'
+    image_name = '1.jpg'
+    
+    image_path = os.path.join(base_path, test_images, image_name)
     model_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/saved_models/unet_model_512.keras'
 
     # Arrow head detection

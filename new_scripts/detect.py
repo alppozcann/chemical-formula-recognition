@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # Test için bir resim yolu belirtin
     #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/data/images/0.jpg'
     #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/image_line_test.jpg'
-    image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/fichiers sources/dossiers_de_test/test2/images/selected/image_0_8_2.jpeg'
+    image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/fichiers_sources/dossiers_de_test/test2/images/selected/image_0_8_2.jpeg'
     
     model_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/saved_models/unet_model_512.keras'
     
