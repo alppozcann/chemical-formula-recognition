@@ -104,7 +104,7 @@ def get_rotated_bounding_box(x1, y1, x2, y2, threshold=20):
     return box, rect
 
 
-def find_lines_intersecting_components(detected_lines, labels, threshold=10):
+def find_lines_intersecting_components(detected_lines, labels, centroids, threshold=10):
     intersecting_lines = []
     visited_lines = set()
     # İlk centroid arka plan olduğundan, onu atlıyoruz
@@ -126,8 +126,8 @@ def find_lines_intersecting_components(detected_lines, labels, threshold=10):
                 break  # Her centroid için yalnızca bir çizgiyi ekle
     return intersecting_lines
 
-'''
-def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2, threshold = 5):
+
+def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2, threshold = 10):
     
     # Çizginin bounding box'ını hesapla
             x_min = min(x1, x2) - threshold
@@ -160,14 +160,14 @@ def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x
                 intersecting_lines.append(((X1, Y1), (X2, Y2)))
                 visited_lines.add(((X1, Y1), (X2, Y2)))
                 find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, X1, X2, Y1, Y2, threshold)
-
-def get_result(image, model_path):
-        binary_mask = detect_arrow_heads(image_path, model_path)
-        original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-        num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
-        detected_lines = detect_lines(original_image)
-        intersecting_lines = find_lines_intersecting_components(detected_lines, labels)
-        visualize_results(original_image, centroids, intersecting_lines) 
+'''
+def get_result(image_path, model_path):
+    binary_mask = detect_arrow_heads(image_path, model_path)
+    original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
+    detected_lines = detect_lines(original_image)
+    intersecting_lines = find_lines_intersecting_components(detected_lines, labels, centroids)  # centroids eklendi
+    visualize_results(original_image, centroids, intersecting_lines)
 
 
 if __name__ == "__main__":
@@ -178,13 +178,13 @@ if __name__ == "__main__":
     model_name = 'unet_model_512.keras'
     image_path = os.path.join(base_path, test_images, image_name)
     model_path = os.path.join(base_path, model_name)
-
+    
+    
     # Arrow head detection
     binary_mask = detect_arrow_heads(image_path, model_path)
 
     # Görüntüyü tekrar yükleyin
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    #no_text_image = remove_text_from_image(image_path)
 
     # Connected Components Analysis
     num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
@@ -193,7 +193,7 @@ if __name__ == "__main__":
     detected_lines = detect_lines(original_image)
 
     #eskisi
-    intersecting_lines = find_lines_intersecting_components(detected_lines, labels)
+    intersecting_lines = find_lines_intersecting_components(detected_lines, labels, centroids)
     
     # Sonuçları görselleştir
     visualize_results(original_image, centroids, intersecting_lines)

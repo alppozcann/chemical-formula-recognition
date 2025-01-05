@@ -44,7 +44,7 @@ test_images = 'test_images'
 image_name = '4.jpeg'
 output_images = 'output_images'
 input_image_path = os.path.join(base_path, test_images, image_name)  # Input file
-output_image_path = os.path.join(base_path,output_images,'output4.jpeg') # Output file
+output_image_path = os.path.join(base_path,output_images,'output.jpeg') # Output file
 
 remove_text(input_image_path, output_image_path)
 
