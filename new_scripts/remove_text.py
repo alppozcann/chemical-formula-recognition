@@ -15,8 +15,7 @@ def remove_text(input_path: str, output_path: str) -> None:
 
     # Load the image and preprocess it
     image = cv2.imread(input_path)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
-    _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)  # Binarize
+    _, binary = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY)  # Binarize
 
     # Detect text in the binarized image
     results = reader.readtext(binary)
