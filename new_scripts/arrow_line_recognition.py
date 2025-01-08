@@ -81,9 +81,9 @@ def visualize_results(image, centroids, intersecting_lines):
     plt.figure(figsize=(8, 8))
     plt.title("Centroids and Intersecting Lines")
     plt.imshow(cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB))
-    cv2.imwrite("output_test2.jpg",output_image)
     plt.axis("off")
-    plt.show()
+    plt.show
+    return output_image
     
 # bounding box calculation
 def get_rotated_bounding_box(x1, y1, x2, y2, threshold=20):
@@ -161,13 +161,14 @@ def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x
                 visited_lines.add(((X1, Y1), (X2, Y2)))
                 find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, X1, X2, Y1, Y2, threshold)
 '''
-def get_result(image_path, model_path):
+def get_result(image_path, model_path, result_path):
     binary_mask = detect_arrow_heads(image_path, model_path)
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
     detected_lines = detect_lines(original_image)
     intersecting_lines = find_lines_intersecting_components(detected_lines, labels, centroids)  # centroids eklendi
-    visualize_results(original_image, centroids, intersecting_lines)
+    output_image = visualize_results(original_image, centroids, intersecting_lines)
+    cv2.imwrite(result_path, output_image)
 
 
 if __name__ == "__main__":
