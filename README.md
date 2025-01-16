@@ -3,6 +3,7 @@
 This repository aims to develop a system for detecting and analyzing chemical formulas from images. The project uses deep learning and computer vision techniques to identify and extract chemical structures and related information from scientific diagrams or schematics.
 
 **Note:** This project is under active development, and features may change frequently.
+**This project works only with MacOS environment for time being.**
 
 ## Overview
 
