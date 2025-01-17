@@ -4,6 +4,8 @@ This repository aims to develop a system for detecting and analyzing chemical fo
 
 **Note:** This project is under active development, and features may change frequently.
 
+**This project works only with MacOS environment for time being.**
+
 ## Overview
 
 The primary objective of this project is to create a robust tool that:
