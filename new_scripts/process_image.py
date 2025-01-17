@@ -25,6 +25,8 @@ if __name__ == '__main__' :
     
     remove_text(image_path, output_image_path)
 
+    print('Text removed from image')
+
     get_result(output_image_path, model_path, result_path)
 
 

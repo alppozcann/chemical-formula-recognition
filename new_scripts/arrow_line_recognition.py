@@ -83,6 +83,8 @@ def visualize_results(image, centroids, intersecting_lines):
     plt.imshow(cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB))
     plt.axis("off")
     plt.show
+    cv2.imshow(output_image)
+    cv2.waitKey(0)
     return output_image
     
 # bounding box calculation
