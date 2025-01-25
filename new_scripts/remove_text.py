@@ -40,10 +40,10 @@ def remove_text(input_path: str, output_path: str) -> None:
 # Example Usage
 base_path = os.getcwd()
 test_images = 'test_images'
-image_name = '4.jpeg'
+image_name = '6.jpg'
 output_images = 'output_images'
 input_image_path = os.path.join(base_path, test_images, image_name)  # Input file
-output_image_path = os.path.join(base_path,output_images,'output.jpeg') # Output file
+output_image_path = os.path.join(base_path,output_images,image_name) # Output file
 
 remove_text(input_image_path, output_image_path)
 

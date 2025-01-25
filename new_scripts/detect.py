@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import tensorflow as tf
 from tensorflow.keras.models import load_model
+import os
 import matplotlib.pyplot as plt
 
 # GPU bellek büyümesini etkinleştir
@@ -47,10 +48,7 @@ def detect_arrow_heads(image_path, model_path):
 
 if __name__ == "__main__":
     # Test için bir resim yolu belirtin
-    #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/data/images/0.jpg'
-    #image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/arrowDetection/image_line_test.jpg'
     image_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/fichiers_sources/dossiers_de_test/test2/images/selected/image_0_8_2.jpeg'
-    
     model_path = '/Users/alpates/Desktop/INSA_LYON/Duffner1/Stage_LIRIS_INRAE/saved_models/unet_model_512.keras'
     
     #process image
@@ -71,4 +69,5 @@ if __name__ == "__main__":
 
     plt.title("Arrow Heads Detected")
     plt.show()
+    print(os.getcwd())
 

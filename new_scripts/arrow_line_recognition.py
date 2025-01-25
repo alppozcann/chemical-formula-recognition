@@ -83,7 +83,7 @@ def visualize_results(image, centroids, intersecting_lines):
     plt.imshow(cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB))
     plt.axis("off")
     plt.show
-    cv2.imshow(output_image)
+    cv2.imshow("Output image", output_image)
     cv2.waitKey(0)
     return output_image
     
@@ -176,8 +176,8 @@ def get_result(image_path, model_path, result_path):
 if __name__ == "__main__":
     # Image path
     base_path = os.getcwd()
-    test_images = 'test_images'
-    image_name = '1.jpg'
+    test_images = 'output_images'
+    image_name = '3.jpeg'
     model_name = 'unet_model_512.keras'
     image_path = os.path.join(base_path, test_images, image_name)
     model_path = os.path.join(base_path, model_name)
@@ -185,13 +185,12 @@ if __name__ == "__main__":
     
     # Arrow head detection
     binary_mask = detect_arrow_heads(image_path, model_path)
-
+    
     # Görüntüyü tekrar yükleyin
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-
+     
     # Connected Components Analysis
     num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
-    original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
         
     detected_lines = detect_lines(original_image)
 
