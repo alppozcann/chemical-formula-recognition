@@ -45,8 +45,8 @@ def detect_arrow_heads(image_path, model_path):
 if __name__ == "__main__":
     # Specify a test image path
     base_path = os.getcwd()
-    test_image_dir = 'notext_images'
-    image_name = '3.jpeg'
+    test_image_dir = 'test_images'
+    image_name = '5.jpeg'
     model_name = 'saved_models/unet_model_512.keras'
     image_path = os.path.join(base_path, test_image_dir, image_name)
     model_path = os.path.join(base_path, model_name)

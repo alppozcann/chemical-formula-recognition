@@ -3,9 +3,6 @@ import numpy as np
 import cv2
 import os
 
-def to_be_removed(string: str) -> bool:
-    return True 
-
 
 def remove_text(input_path: str, output_path: str) -> None:
     """
@@ -37,16 +34,15 @@ def remove_text(input_path: str, output_path: str) -> None:
         cv2.fillPoly(image, pts=[points], color=(255, 255, 255))  # Fill with white color
 
     cv2.imwrite(output_path, image)  # Save the processed image
-    
-    '''
-    # Example Usage
+    print(f"Processed image saved to {output_path}")
+
+# Example Usage
+if __name__ == "__main__":
     base_path = os.getcwd()
     test_images = 'test_images'
-    image_name = '6.jpg'
+    image_name = '1.jpg'
     output_images = 'notext_images'
     input_image_path = os.path.join(base_path, test_images, image_name)  # Input file
-    output_image_path = os.path.join(base_path,output_images,image_name) # Output file
+    output_image_path = os.path.join(base_path, output_images, image_name)  # Output file
 
     remove_text(input_image_path, output_image_path)
-    print(f"Processed image saved to {output_image_path}")
-    '''

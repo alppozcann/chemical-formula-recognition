@@ -65,13 +65,16 @@ def detect_lines(image):
 
 
 def visualize_results(image, centroids, intersecting_lines):
+    """
+    Visualize the centroids and intersecting lines on the image.
+    """
     output_image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
     # Mark centroids
     for cx, cy in centroids[1:]:
         cv2.circle(output_image, (int(cx), int(cy)), 5, (0, 255, 0), -1)  # Green dots
 
-    # Draw lines (highlight intersecting ones)
+    # Draw lines
     for (x1, y1), (x2, y2) in intersecting_lines:
         cv2.line(output_image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Red lines
 
@@ -82,7 +85,7 @@ def visualize_results(image, centroids, intersecting_lines):
     plt.show()
     return output_image
 
-# bounding box calculation
+# Bounding box calculation
 def get_rotated_bounding_box(x1, y1, x2, y2, threshold=20):
     # Convert the line to a list of points
     points = np.array([[x1, y1], [x2, y2]], dtype=np.float32)
@@ -102,25 +105,34 @@ def get_rotated_bounding_box(x1, y1, x2, y2, threshold=20):
 
 
 def find_lines_intersecting_components(detected_lines, labels, centroids, threshold=10):
+    """
+    Find intersecting lines for detected components and remove centroids with no intersecting lines.
+    """
     intersecting_lines = []
+    valid_centroids = [centroids[0]]  # Keep the background centroid (index 0)
     visited_lines = set()
-    # Skip the first centroid as it's the background
-    for cx, cy in centroids[1:]:
-        # Coordinates of the centroid
+
+    for idx, (cx, cy) in enumerate(centroids[1:], start=1):  # Skip background centroid
+        has_intersecting_line = False
         for (x1, y1), (x2, y2) in detected_lines:
-            # Calculate bounding box for the line
+            # Check proximity of line to the centroid
             x_min = min(x1, x2) - threshold
             x_max = max(x1, x2) + threshold
             y_min = min(y1, y2) - threshold
             y_max = max(y1, y2) + threshold
 
-            # Check if centroid is within the bounding box
             if x_min <= cx <= x_max and y_min <= cy <= y_max:
                 intersecting_lines.append(((x1, y1), (x2, y2)))
                 visited_lines.add(((x1, y1), (x2, y2)))
-                find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2)
+                # Backtrack to find more intersecting lines
+                find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2, threshold)
+                has_intersecting_line = True
                 break  # Add only one line per centroid
-    return intersecting_lines
+
+        if has_intersecting_line:
+            valid_centroids.append((cx, cy))  # Only keep centroids with intersecting lines
+
+    return intersecting_lines, valid_centroids
 
 
 def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x1, x2, y1, y2, threshold=10):
@@ -138,12 +150,33 @@ def find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, x
                 find_intersecting_lines(detected_lines, intersecting_lines, visited_lines, X1, X2, Y1, Y2)
 
 
+def filter_short_lines(lines, min_length=30):
+    """
+    Filter out lines shorter than the specified minimum length.
+    """
+    filtered_lines = []
+    for line in lines:
+        (x1, y1), (x2, y2) = line
+        # Calculate the length of the line
+        length = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        if length >= min_length:
+            filtered_lines.append(line)
+    return filtered_lines
+
+
 def get_result(image_path, model_path, result_path):
     binary_mask = detect_arrow_heads(image_path, model_path)
     original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
     detected_lines = detect_lines(original_image)
-    intersecting_lines = find_lines_intersecting_components(detected_lines, labels, centroids)
+
+    # Find intersecting lines
+    intersecting_lines, centroids = find_lines_intersecting_components(detected_lines, labels, centroids)
+
+    # Filter short lines
+    intersecting_lines = filter_short_lines(intersecting_lines)
+    intersecting_lines, centroids = find_lines_intersecting_components(intersecting_lines, labels, centroids)
+    
     output_image = visualize_results(original_image, centroids, intersecting_lines)
     cv2.imwrite(result_path, output_image)
 
@@ -152,24 +185,9 @@ if __name__ == "__main__":
     # Image path
     base_path = os.getcwd()
     test_images = 'notext_images'
-    image_name = '3.jpeg'
+    image_name = '4.jpeg'
     model_name = 'unet_model_512.keras'
     image_path = os.path.join(base_path, test_images, image_name)
     model_path = os.path.join(base_path,'saved_models', model_name)
-
-    # Arrow head detection
-    binary_mask = detect_arrow_heads(image_path, model_path)
-
-    # Reload the image
-    original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-
-    # Connected Components Analysis
-    num_labels, labels, stats, centroids = connected_components_analysis(binary_mask, original_image)
-
-    detected_lines = detect_lines(original_image)
-
-    # Previous
-    intersecting_lines = find_lines_intersecting_components(detected_lines, labels, centroids)
-
-    # Visualize results
-    visualize_results(original_image, centroids, intersecting_lines)
+    
+    get_result(image_path, model_path, os.path.join(os.getcwd(), 'result_image.jpg'))
