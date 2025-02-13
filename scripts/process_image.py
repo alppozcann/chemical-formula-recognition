@@ -17,7 +17,7 @@ if __name__ == '__main__' :
     test_images = 'test_images'
     notext_images = 'notext_images'
     result_images = 'result_images'
-    image_name = '5.jpeg'
+    image_name = '8.jpeg'
     model_name = 'unet_model_512.keras'
     
     image_path = os.path.join(base_path, test_images, image_name)

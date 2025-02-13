@@ -68,21 +68,16 @@ def plot_image_with_detections(image, arrow_heads, image_file):
 if __name__ == "__main__":
     # Get the paths of all images in the specified directory
     base_path = os.getcwd()
-    image_dir = os.path.join(base_path, 'data/images')
+    image_dir = os.path.join(base_path, 'test_images')
     model_path = os.path.join(base_path, 'saved_models/unet_model_512.keras')
 
-    # Retrieve all image files from the directory
-    image_files = [f for f in os.listdir(image_dir) if f.endswith('.jpg') or f.endswith('.png')]
 
-    # Process and display each image
-    for image_file in image_files:
-        image_path = os.path.join(image_dir, image_file)
-        
+    image_path = os.path.join(base_path, 'test_images', '1.jpg')
         # Call detect_arrow_heads function
-        arrow_heads, image = detect_arrow_heads(image_path, model_path)
+    arrow_heads, image = detect_arrow_heads(image_path, model_path)
         
         # Log the detected arrow head positions
-        print(f"Arrow heads detected in {image_file} at positions:", arrow_heads)
+    print(f"Arrow heads detected in {image_path} at positions:", arrow_heads)
 
         # Visualize the results
-        plot_image_with_detections(image, arrow_heads, image_file)
+    plot_image_with_detections(image, arrow_heads, image_file='1.jpg')
